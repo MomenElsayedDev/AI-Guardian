@@ -1,0 +1,45 @@
+[
+  {
+    "id": "5722cb55-d243-4b3a-9c5d-e005199ac383",
+    "input": "http://hack-me.test/?q=<script>alert('hacked')</script>",
+    "result": {
+      "status": "Malicious",
+      "confidence": 91,
+      "explanation": "High-risk threat detected. Indicators: malware keywords: hacked.",
+      "keywords": [
+        "hack-me.test",
+        "alert",
+        "hacked"
+      ]
+    },
+    "timestamp": "2026-03-30T21:50:52.076Z"
+  },
+  {
+    "id": "12e93d52-4700-4d0b-9eac-8e255752a6b9",
+    "input": "https://github.com/user/project",
+    "result": {
+      "status": "Safe",
+      "confidence": 88,
+      "explanation": "No significant threat indicators detected. Content appears to be benign.",
+      "keywords": [
+        "github.com"
+      ]
+    },
+    "timestamp": "2026-03-30T21:51:06.812Z"
+  },
+  {
+    "id": "af9360b9-13ff-4d1d-a2a0-7a6ab5c5e32c",
+    "input": "http://mybank.test/login",
+    "result": {
+      "status": "Suspicious",
+      "confidence": 73,
+      "explanation": "This input contains potentially suspicious patterns such as urgency tactics, unusual links, or requests for sensitive actions. Verify the source independently before proceeding.",
+      "keywords": [
+        "mybank.test",
+        "login",
+        "bank"
+      ]
+    },
+    "timestamp": "2026-03-30T21:51:31.567Z"
+  }
+]

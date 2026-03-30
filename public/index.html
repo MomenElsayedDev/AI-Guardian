@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Guardian – Smart Threat Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Noise texture overlay ── -->
+  <div class="noise-overlay"></div>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L4 7v9c0 7.18 5.16 13.9 12 15.93C22.84 29.9 28 23.18 28 16V7L16 2z" fill="currentColor" opacity="0.15"/>
+            <path d="M16 2L4 7v9c0 7.18 5.16 13.9 12 15.93C22.84 29.9 28 23.18 28 16V7L16 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M11 16l3 3 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="logo-text">AI<span class="accent">Guardian</span></span>
+      </div>
+
+      <nav class="header-nav">
+        <span class="nav-badge" id="statsBadge">
+          <span class="badge-dot"></span>
+          <span id="statsText">Loading...</span>
+        </span>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+          <span class="theme-icon theme-icon-dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+          </span>
+          <span class="theme-icon theme-icon-light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-chip">AI-Powered Security</span>
+      </div>
+      <h1 class="hero-title">
+        Detect Threats<br/>
+        <span class="title-gradient">Before They Strike</span>
+      </h1>
+      <p class="hero-sub">
+        Paste any suspicious text, URL, or message and our AI will instantly classify threats, detect manipulation tactics, and extract risk indicators.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Main App ── -->
+  <main class="app-main">
+    <div class="container">
+
+      <!-- ── Analyzer Card ── -->
+      <div class="card analyzer-card">
+        <div class="card-header">
+          <h2 class="card-title">Threat Analyzer</h2>
+          <span class="card-subtitle">Text · URL · Message</span>
+        </div>
+
+        <div class="input-wrapper">
+          <textarea
+            id="threatInput"
+            class="threat-input"
+            placeholder="Paste suspicious text, URL, email, or message here...&#10;&#10;Example: 'Your account will be suspended. Click here to verify immediately.'"
+            rows="5"
+            maxlength="2000"
+          ></textarea>
+          <div class="input-footer">
+            <span class="char-count" id="charCount">0 / 2000</span>
+            <button class="btn btn-clear" id="clearBtn" title="Clear input">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-analyze" id="analyzeBtn">
+          <span class="btn-label">Analyze Threat</span>
+          <span class="btn-spinner" id="btnSpinner"></span>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- ── Result Card (hidden until analysis) ── -->
+      <div class="card result-card hidden" id="resultCard">
+        <div class="result-header">
+          <div class="result-status-wrap">
+            <div class="status-icon" id="statusIcon"></div>
+            <div>
+              <div class="status-label" id="statusLabel">–</div>
+              <div class="result-confidence" id="confidenceLabel">Confidence: –</div>
+            </div>
+          </div>
+          <div class="result-ts" id="resultTimestamp"></div>
+        </div>
+
+        <!-- Risk Meter -->
+        <div class="risk-meter-wrap">
+          <div class="risk-meter-header">
+            <span class="risk-meter-label">Risk Level</span>
+            <span class="risk-meter-pct" id="riskPct">0%</span>
+          </div>
+          <div class="risk-meter-track">
+            <div class="risk-meter-bar" id="riskBar"></div>
+          </div>
+          <div class="risk-meter-ticks">
+            <span>Safe</span>
+            <span>Suspicious</span>
+            <span>Malicious</span>
+          </div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="result-section">
+          <h3 class="section-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Analysis
+          </h3>
+          <p class="result-explanation" id="resultExplanation">–</p>
+        </div>
+
+        <!-- Keywords -->
+        <div class="result-section" id="keywordsSection">
+          <h3 class="section-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            Risk Keywords
+          </h3>
+          <div class="keywords-wrap" id="keywordsWrap"></div>
+        </div>
+
+        <!-- Scanned Input -->
+        <div class="result-section">
+          <h3 class="section-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Scanned Input
+          </h3>
+          <p class="result-input-preview" id="resultInputPreview"></p>
+        </div>
+      </div>
+
+      <!-- ── Stats Row ── -->
+      <div class="stats-row" id="statsRow">
+        <div class="stat-chip safe-chip">
+          <span class="stat-dot safe-dot"></span>
+          <span id="statSafe">0</span> Safe
+        </div>
+        <div class="stat-chip suspicious-chip">
+          <span class="stat-dot suspicious-dot"></span>
+          <span id="statSuspicious">0</span> Suspicious
+        </div>
+        <div class="stat-chip malicious-chip">
+          <span class="stat-dot malicious-dot"></span>
+          <span id="statMalicious">0</span> Malicious
+        </div>
+        <div class="stat-chip total-chip">
+          <span id="statTotal">0</span> Total Scans
+        </div>
+      </div>
+
+      <!-- ── History Section ── -->
+      <div class="card history-card">
+        <div class="history-header">
+          <div>
+            <h2 class="card-title">Scan History</h2>
+            <span class="card-subtitle">Recent threat analyses</span>
+          </div>
+          <button class="btn btn-ghost" id="refreshHistory">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
+
+        <div class="history-list" id="historyList">
+          <div class="history-empty" id="historyEmpty">
+            <div class="empty-icon">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="8" y="12" width="48" height="40" rx="4"/><line x1="8" y1="22" x2="56" y2="22"/>
+                <line x1="20" y1="32" x2="44" y2="32"/><line x1="20" y1="40" x2="36" y2="40"/>
+              </svg>
+            </div>
+            <p>No scans yet. Analyze your first input above.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /container -->
+  </main>
+
+  <!-- ── Toast Container ── -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ── Voice Alert Modal ── -->
+  <div class="voice-modal hidden" id="voiceModal">
+    <div class="voice-modal-inner">
+      <div class="voice-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+        </svg>
+      </div>
+      <h3>⚠️ Malicious Threat Detected</h3>
+      <p>Voice alert triggered. Stay vigilant and do not interact with this content.</p>
+      <button class="btn btn-danger" id="dismissVoice">Dismiss</button>
+    </div>
+  </div>
+  <div class="modal-backdrop hidden" id="modalBackdrop"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
