@@ -128,10 +128,3 @@ ai-guardian/
 In `config/db.js`, uncomment the MongoDB section at the bottom and comment out the JSON file section. Then set `MONGO_URI` in your `.env`.
 
 ---
-
-## 🏆 Hackathon Tips
-
-- Works fully offline with heuristic mode (no API keys needed for demo)
-- Dark mode looks 🔥 on projectors
-- Press **Ctrl+Enter** to submit from the textarea
-- Click any history item to re-display its result
