@@ -1,5 +1,7 @@
 # 🛡️ AI Guardian – Smart Threat Detection & Awareness System
 
+![logo](assets/logo.png)
+
 A hackathon-ready AI-powered threat detection web app. Analyzes text, URLs, and messages for phishing, scams, manipulation tactics, and malicious content.
 
 ---
